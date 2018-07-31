@@ -1,6 +1,6 @@
 from typing import Any, Sequence
+from ..models import User
 
-from django.contrib.auth import get_user_model
 from factory import DjangoModelFactory, Faker, post_generation
 
 
@@ -25,5 +25,5 @@ class UserFactory(DjangoModelFactory):
         self.set_password(password)
 
     class Meta:
-        model = get_user_model()
+        model = User
         django_get_or_create = ["username"]

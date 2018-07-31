@@ -1,11 +1,11 @@
-from django.contrib.auth import get_user_model, forms
+from django.contrib.auth import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-User = get_user_model()
+from .models import User
 
 
-class UserChangeForm(forms.UserChangeForm):
+class MyUserChangeForm(forms.UserChangeForm):
 
     class Meta(forms.UserChangeForm.Meta):
         model = User
