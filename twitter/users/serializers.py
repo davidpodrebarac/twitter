@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User
+from twitter.tweets.serializers import TweetSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,10 +15,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     unfollow = serializers.HyperlinkedIdentityField(
         view_name='user-unfollow'
     )
+    created_tweets = TweetSerializer(read_only=True, many=True)  # many=True is required
 
     class Meta:
         model = User
         fields = ('id', 'url', 'username', 'full_name', 'email', 'is_active', 'date_joined', 'followers',
                   'created_tweets', 'follows', 'follow', 'unfollow')
         read_only_fields = ('id', 'url', 'is_active', 'date_joined', 'followers')
-
