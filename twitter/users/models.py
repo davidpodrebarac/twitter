@@ -10,8 +10,12 @@ class User(AbstractUser):
     followers = ManyToManyField(
         "self",
         verbose_name="list of followers",
-        related_name='following',
+        related_name='follows',
+        symmetrical=False,
     )
 
     def get_absolute_url(self):
         return reverse("users-detail", kwargs={"username": self.username})
+
+    class Meta:
+        ordering = ['date_joined']

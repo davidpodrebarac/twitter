@@ -5,12 +5,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
-from django.contrib import admin
 from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
+
 from twitter.users.views import UserViewSet
 from twitter.tweets.views import TweetViewSet, TagViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'tweets', TweetViewSet)
 router.register(r'tags', TagViewSet)
@@ -31,6 +32,7 @@ urlpatterns = [
                   ),
                   path("accounts/", include("allauth.urls")),
                   url(r'^api-auth/', include('rest_framework.urls', namespace="rest_framework")),
+                  url(r'^api-token-auth/', obtain_jwt_token),
                   # Your stuff: custom urls includes go here
                   path('api/', include(router.urls)),
               ] + static(
