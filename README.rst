@@ -74,4 +74,18 @@ See detailed `cookiecutter-django Docker documentation`_.
 .. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
 
 
+How to run application?
+-----------------------
 
+* create database using docker
+```docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=password --name=postgres104 postgres:10.4```
+* connect to database with some tool(I used pgcli) with your password(you can change that)
+```pgcli -h 127.0.0.1 -U postgres```
+* create database twitter
+```create database twitter```
+* position yourself in root directory and migrate migrations to database
+```python manage.py migrate```
+* create your own data or load fixtures with this command
+```python manage.py loaddata */fixtures/*```
+* run server on port 5100 (this will serve admin interface on http://localhost:5100/admin/ and api on http://127.0.0.1:5100/api/)
+```python manage.py runserver 5100```
