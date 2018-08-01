@@ -1,0 +1,1 @@
+[{"model": "tweets.tag", "pk": 2, "fields": {"name": "#django"}}, {"model": "tweets.tag", "pk": 3, "fields": {"name": "#rest"}}, {"model": "tweets.tag", "pk": 4, "fields": {"name": "#drf"}}, {"model": "tweets.tag", "pk": 5, "fields": {"name": "#admintweets"}}, {"model": "tweets.tag", "pk": 6, "fields": {"name": "#random1tweets"}}]
