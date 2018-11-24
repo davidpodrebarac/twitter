@@ -9,8 +9,8 @@ APPS_DIR = ROOT_DIR.path('twitter')
 
 env = environ.Env()
 
-env_file = env("ENV_SETTINGS", default="dev.env")
-env.read_env(str(ROOT_DIR.path(f'.envs/{env_file}')))
+# env_file = env("ENV_SETTINGS", default="dev.env")
+# env.read_env(str(ROOT_DIR.path(f'.envs/{env_file}')))
 
 DEBUG = env.bool('DJANGO_DEBUG', False)
 # Local time zone. Choices are
