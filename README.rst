@@ -15,21 +15,18 @@ Basic Commands
 
 Setting Up Your Users
 ^^^^^^^^^^^^^^^^^^^^^
-
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+Only superusers can be created for this app, it doesn't offer any registration endpoints.
 
 * To create an **superuser account**, use this command::
 
     $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
 How to run application?
 -----------------------
 
 1. create database using docker
 
-``docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=password --name=postgres104 postgres:10.4``
+``docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=<pw> --name=<name> postgres:<version>``
 
 2. connect to database with some tool(I used pgcli) with your password(you can change that)
 
@@ -43,7 +40,7 @@ How to run application?
 
 ``python manage.py migrate``
 
-5. create your own data or load fixtures with this command
+5. (optional) create your own data or load fixtures with this command
 
 ``python manage.py loaddata */fixtures/*``
 
@@ -54,4 +51,4 @@ How to run application?
 Api authentification
 --------------------
 
-The easiest way to authenticate is with JWT(Json web token) or through browser on http://127.0.0.1:5100/api-auth/login/ where you can use Web browsable API.
+The easiest way to authenticate is with JWT(Json web token) on `http://127.0.0.1:5100/api-auth/login/`
