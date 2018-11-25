@@ -1,10 +1,10 @@
 from rest_framework import viewsets, permissions, decorators
 from rest_framework.response import Response
 
-from .models import Tweet, Tag
-from .serializers import TweetSerializer, TagSerializer
+from twitter.tweets import extract_tags_from_description
+from .models import Tweet, Tag, create_tag_objects_from_tags
 from .permissions import IsTweetOwner
-from rest_framework.generics import ListAPIView
+from .serializers import TweetSerializer, TagSerializer
 
 
 class TweetViewSet(viewsets.ModelViewSet):
@@ -13,14 +13,21 @@ class TweetViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
-            return [permissions.IsAuthenticatedOrReadOnly()]  # even unregistreted users can see tweets
+            return [permissions.IsAuthenticatedOrReadOnly()]
         elif self.action in ['update', 'partial_update', 'destroy']:
             return [IsTweetOwner()]
         else:  # create
             return [permissions.IsAuthenticated()]
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        tags = extract_tags_from_description(serializer.validated_data['text'])
+        tag_list = create_tag_objects_from_tags(tags)
+        serializer.save(creator=self.request.user, tags=tag_list)
+
+    def perform_update(self, serializer):
+        tags = extract_tags_from_description(serializer.validated_data['text'])
+        tag_list = create_tag_objects_from_tags(tags)
+        serializer.save(tags=tag_list)
 
     @decorators.action(methods=['GET'], detail=False, permission_classes=[permissions.IsAuthenticated],
                        url_path='private-timeline')

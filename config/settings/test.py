@@ -14,6 +14,14 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="aFI2y3JPJSpgNEkQLkW3uoVRO2mZmHo8X
 # https://docs.djangoproject.com/en/dev/ref/settings/#test-runner
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
+# in memory db
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
+}
+
 # CACHES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches

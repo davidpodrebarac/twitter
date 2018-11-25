@@ -1,5 +1,17 @@
 from django.db import models
+
 from twitter.users.models import User
+
+
+def create_tag_objects_from_tags(tags):
+    existing_tags = Tag.objects.filter(name__in=tags)
+    existing_tag_names = existing_tags.values_list('name', flat=True)
+    tag_list = list(existing_tags)
+    for t in set(tags) - set(existing_tag_names):
+        new_tag = Tag(name=t)
+        new_tag.save()
+        tag_list.append(new_tag)
+    return tag_list
 
 
 class Tag(models.Model):

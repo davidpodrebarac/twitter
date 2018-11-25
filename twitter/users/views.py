@@ -2,6 +2,8 @@ from rest_framework import viewsets, permissions, mixins, decorators, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from twitter.tweets.models import Tweet
+from twitter.tweets.serializers import TweetSerializer
 from .models import User
 from .permissions import IsOwnerLoggedIn, IsFollower, IsNotFollower
 from .serializers import UserSerializer
@@ -36,3 +38,9 @@ class UserViewSet(viewsets.GenericViewSet,
             return Response(data={'message': 'Already UNSUBSCRIBED'}, status=status.HTTP_400_BAD_REQUEST)
         other_user.followers.remove(request.user)
         return Response(data={'message': 'Successfully unsubscribed!'}, status=status.HTTP_200_OK)
+
+    @decorators.action(methods=['GET'], detail=True, permission_classes=[IsAuthenticated])
+    def tweets(self, request, pk):
+        user_tweets = Tweet.objects.filter(creator_id=pk).all()
+        return Response(data=TweetSerializer(user_tweets, many=True, context={'request': request}).data)
+
