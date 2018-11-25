@@ -8,9 +8,9 @@ from twitter.tweets.views import TweetViewSet, TagViewSet
 from twitter.users.views import UserViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'users', UserViewSet)
-router.register(r'tweets', TweetViewSet)
-router.register(r'tags', TagViewSet)
+router.register(r'users', UserViewSet, base_name='user')
+router.register(r'tweets', TweetViewSet, base_name='tweets')
+router.register(r'tags', TagViewSet, base_name='tags')
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
