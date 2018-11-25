@@ -328,3 +328,4 @@ twitter/media/
 .envs/*
 !.envs/.local/
 .idea/**
+docs/**
