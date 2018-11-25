@@ -1,6 +1,14 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from .models import User
-from twitter.tweets.serializers import TweetSerializer
+
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    return {
+        'token': token,
+        'user': UserSerializer(user, context={'request': request}).data
+    }
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,16 +17,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         view_name='user-detail'
     )
-    follow = serializers.HyperlinkedIdentityField(
-        view_name='user-follow'
-    )
-    unfollow = serializers.HyperlinkedIdentityField(
-        view_name='user-unfollow'
-    )
-    created_tweets = TweetSerializer(read_only=True, many=True)  # many=True is required
 
     class Meta:
         model = User
-        fields = ('id', 'url', 'username', 'full_name', 'email', 'is_active', 'date_joined', 'followers',
-                  'created_tweets', 'follows', 'follow', 'unfollow')
-        read_only_fields = ('id', 'url', 'is_active', 'date_joined', 'followers')
+        fields = ('id', 'username', 'full_name', 'email', 'is_active', 'date_joined', 'followers', 'follows')
+        read_only_fields = ('id', 'is_active', 'date_joined', 'followers', 'follows')
+        extra_kwargs = {'username': {'required': False}}
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise ValidationError("A user with that username already exists.")
+        return value

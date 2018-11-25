@@ -2,6 +2,8 @@
 Base settings to build other settings files upon.
 """
 
+from datetime import timedelta
+
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (twitter/config/settings/base.py - 3 = twitter/)
@@ -9,24 +11,12 @@ APPS_DIR = ROOT_DIR.path('twitter')
 
 env = environ.Env()
 
-# env_file = env("ENV_SETTINGS", default="dev.env")
-# env.read_env(str(ROOT_DIR.path(f'.envs/{env_file}')))
-
 DEBUG = env.bool('DJANGO_DEBUG', False)
-# Local time zone. Choices are
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# though not all of them may be available with every OS.
-# In Windows, this must be set to your system time zone.
 TIME_ZONE = 'UTC'
-# https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
-# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
-# https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
 USE_L10N = True
-# https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
 
 # DATABASES
@@ -190,7 +180,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = 'admin/'
+ADMIN_URL = 'admin'
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [
     ("""David Podrebarac""", 'podrebarac.david@mail.com'),
@@ -220,7 +210,12 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
     )
+}
+
+
+# JWT settings
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(hours=3),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'twitter.users.serializers.jwt_response_payload_handler',
 }
