@@ -21,7 +21,7 @@ django-environ==0.4.5
 django-extensions==2.1.0
 django-model-utils==3.1.2
 django-redis==4.9.0
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
 docutils==0.14
 factory-boy==2.11.1
